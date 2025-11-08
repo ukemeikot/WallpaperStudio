@@ -115,3 +115,6 @@ Bash
 cd ..
 hdiutil create -ov -volname "WallApp Installer" -fs HFS+ -srcfolder ./macos/build/Release_App/WallApp.app -format UDBZ WallpaperStudio_Setup.dmg
 The resulting WallpaperStudio_Setup.dmg can now be shared and installed on any compatible Mac.
+to download the dmg image
+
+https://drive.google.com/file/d/16p4Wb9Ka9_8LrPHI-jqkoXNh3ccteiNp/view?usp=share_link
