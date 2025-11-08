@@ -1,79 +1,117 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+That's the perfect final step! A well-structured README.md is essential for documenting your application's setup, architecture, and features.
 
-# Getting Started
+Here is a detailed README.md file for your Wallpaper Studio React Native for macOS application.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+🖼️ Wallpaper Studio (macOS Desktop Client)
+A cross-platform desktop application built with React Native for macOS, designed for browsing, previewing, and setting high-quality desktop wallpapers from curated categories.
 
-## Step 1: Start the Metro Server
+🌟 Features Overview
+Custom macOS Interface: Designed for a native desktop experience with a clean, cohesive layout.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Context-Based State Management: Uses React Context to globally manage the user's active wallpaper and favorites list, resolving complexity and state-drilling issues.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Dynamic Layout Toggle: Allows users to switch the category list between Grid View (3 columns) and a compact List View (1 column).
 
-```bash
-# using npm
-npm start
+Custom Asset Integration: Uses local image assets (.png, .jpg) for icons (Header, Favorites) and category thumbnails.
 
-# OR using Yarn
-yarn start
-```
+Finalized Setup Flow: Implements the two-stage process for setting a wallpaper (Detail View → Setup Modal) and features a functional favorites toggle.
 
-## Step 2: Start your Application
+Custom Typography: Integrates custom fonts (e.g., Clash Display) for major headings.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+🛠️ Project Setup (macOS Prerequisites)
+To build and run this application, you must have the following tools installed on your macOS machine:
 
-### For Android
+Xcode (Version 14+): Install from the Mac App Store.
 
-```bash
-# using npm
-npm run android
+Xcode Command Line Tools: Run xcode-select --install in your terminal.
 
-# OR using Yarn
-yarn android
-```
+Node.js (LTS): Use Node Version Manager (NVM) or Homebrew to install a stable version (e.g., v18 or v20).
 
-### For iOS
+CocoaPods: The native dependency manager for macOS/iOS.
 
-```bash
-# using npm
-npm run ios
+Bash
+brew install ruby # (If you need a modern ruby environment)
+sudo gem install cocoapods
+1. Installation
 
-# OR using Yarn
-yarn ios
-```
+Clone the repository and install the JavaScript dependencies:
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Bash
+git clone <YOUR_REPO_URL>
+cd WallApp # or StableMacApp
+npm install # or yarn install
+2. Linking Native Dependencies
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Install the necessary native modules and update the project workspace:
 
-## Step 3: Modifying your App
+Bash
+cd macos/
+pod install 
+cd ..
+3. Custom Font Linking (Manual Step)
 
-Now that you have successfully run the app, let's modify it.
+Since the react-native link command is deprecated, custom fonts must be added manually in Xcode:
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+Open macos/WallApp.xcodeproj.
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Select the WallApp-macOS target.
 
-## Congratulations! :tada:
+Go to the Build Phases tab.
 
-You've successfully run and modified your React Native App. :partying_face:
+Add a New Copy Files Phase with the destination set to Resources.
 
-### Now what?
+Add all font files (.ttf, .otf) from the assets/fonts directory to this phase.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+Go to the Info tab and add the array key Fonts provided by application (UIAppFonts), listing the exact filenames (e.g., ClashDisplay-Bold.ttf).
 
-# Troubleshooting
+▶️ Running the Application
+1. Start the Metro Bundler
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Keep the JavaScript server running in a dedicated terminal window:
 
-# Learn More
+Bash
+npx react-native start
+2. Launch the macOS App
 
-To learn more about React Native, take a look at the following resources:
+In a separate terminal window, run the native build command:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Bash
+npx react-native run-macos
+The application should launch in a new desktop window.
+
+🏗️ Project Architecture & File Structure
+The project follows a standard scalable component architecture using TypeScript.
+
+Folder	Contents	Purpose
+/screens	HomeScreen.tsx, BrowseScreen.tsx, etc.	Full-page views managed by React Navigation.
+/components	HeaderBar.tsx, CategoryCard.tsx, PreviewPane.tsx	Small, reusable UI elements used across multiple screens.
+/data	categories.ts, wallpapers.ts	Mock data arrays and utility functions for fetching/filtering data.
+/types	types.ts	Centralized TypeScript interfaces (Wallpaper, Category, etc.).
+/context	WallpaperContext.tsx	Manages the non-serializable global state (activeWallpaper, favoriteIds, onSetWallpaper setter).
+/assets	/icons/, /wallpapers/, /fonts/	All local image and font resources.
+💡 Key Implementation Details
+State Management: State is centralized in the WallpaperProvider (in /context/) to avoid prop-drilling and resolve the "non-serializable values" warning. Screens access the state/setters using the useWallpaperSetter hook.
+
+Dynamic Assets: All images are loaded via static require() calls mapped in /data/wallpapers.ts to satisfy the Metro bundler.
+
+Responsive Layout: The Category Detail Screen uses a Flexbox structure to achieve a consistent 50/50 split between the list and the preview pane, regardless of window size.
+
+Setup Flow: The Wallpaper Setup Screen is rendered as a conditional modal overlay on top of the blurred CategoryDetailScreen content, preserving visual context.
+
+📦 Distribution (Creating the .DMG)
+To create a final, installable .dmg file from the terminal (which is required since the Xcode GUI can be unstable):
+
+Run Archive (in macos/): Create the optimized release archive.
+
+Bash
+xcodebuild -workspace WallApp.xcworkspace -scheme WallApp-macOS -configuration Release archive -archivePath $PWD/build/WallApp.xcarchive
+Export the App (in macos/): Extract the final application bundle.
+
+Bash
+xcodebuild -exportArchive -archivePath ./build/WallApp.xcarchive -exportPath ./build/Release_App -exportOptionsPlist ExportOptions.plist
+Create DMG (in project root): Package the exported app into the installer.
+
+Bash
+cd ..
+hdiutil create -ov -volname "WallApp Installer" -fs HFS+ -srcfolder ./macos/build/Release_App/WallApp.app -format UDBZ WallpaperStudio_Setup.dmg
+The resulting WallpaperStudio_Setup.dmg can now be shared and installed on any compatible Mac.
